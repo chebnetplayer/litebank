@@ -1,0 +1,151 @@
+### список индексов
+GET http://localhost:9200/_cat/indices
+
+### post data
+POST http://localhost:9200/allrecipes/_doc/1
+Content-Type: application/json
+
+{
+  "title": "Banana Oatmeal Cookie",
+  "description": "Awesome! This recipe has been handed down in my family for generations. It's a good way to use overripe bananas. It's also a moist cookie that travels well either in the mail or car.",
+  "ingredients": [
+    "1 1/2 cups sifted all-purpose flour",
+    "1/2 teaspoon baking soda",
+    "1 teaspoon salt",
+    "1/4 teaspoon ground nutmeg",
+    "3/4 teaspoon ground cinnamon",
+    "3/4 cup shortening",
+    "1 cup white sugar",
+    "2 egg",
+    "1 cup mashed bananas",
+    "1 3/4 cups quick cooking oats",
+    "1/2 cup chopped nuts"
+  ],
+  "directions": [
+    "Preheat oven to 400 degrees F (200 degrees C).",
+    "Sift together the flour, baking soda, salt, nutmeg and cinnamon.",
+    "Cream together the shortening and sugar; beat until light and fluffy. Add egg, banana, oatmeal and nuts. Mix well.",
+    "Add dry ingredients, mix well and drop by the teaspoon on ungreased cookie sheet.",
+    "Bake at 400 degrees F (200 degrees C) for 15 minutes or until edges turn lightly brown. Cool on wire rack. Store in a closed container."
+  ],
+  "servings": 24,
+  "tags": [ "dessert", "fruit" ],
+  "author": {
+    "name": "Blair Bunny",
+    "url": "http://allrecipes.com/cook/10179/profile.aspx"
+  },
+  "source_url": "http://allrecipes.com/Recipe/Banana-Oatmeal-Cookie/Detail.aspx"
+}
+
+### get data
+GET http://localhost:9200/allrecipes/_doc/1
+
+
+### list data
+GET http://localhost:9200/allrecipes/_search
+
+
+### list fruits
+GET http://localhost:9200/allrecipes/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "term": {
+      "tags": "vegetarian"
+    }
+  }
+}
+
+### delete data
+DELETE http://localhost:9200/allrecipes/_doc/o204vocBWid0dsupX4B9
+
+### delete index
+DELETE http://localhost:9200/allrecipes
+
+
+### list account-updated
+GET /account-updated/_search?size=100
+Host: localhost:9200
+
+### list account-updated Кэшбек
+GET /account-updated/_search
+Host: localhost:9200
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "category": "кэшбек"
+    }
+  }
+}
+
+### list account-updated 1
+GET /account-updated/_search
+Host: localhost:9200
+Content-Type: application/json
+
+{
+  "query": {
+    "term": {
+      "accountId": 1
+    }
+  }
+}
+
+### list all
+GET /account-updated/_search
+Host: localhost:9200
+
+
+### list account-updated operationId
+GET /account-updated/_search
+Host: localhost:9200
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "operationId": "8230b60a-7414-4945-8a83-b272e4448143"
+    }
+  }
+}
+
+
+### mapping
+GET /account-updated
+Host: localhost:9200
+
+### termvectors fields=operationId
+GET /account-updated/_termvectors/LHlY4ocBOUZaZ5_ijNt4?fields=operationId
+Host: localhost:9200
+
+
+### list account-updated 1&Кэшбек
+GET /account-updated/_search
+Host: localhost:9200
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "accountId": 1
+          }
+        },
+        {
+          "match": {
+            "category": "кэшбек"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+

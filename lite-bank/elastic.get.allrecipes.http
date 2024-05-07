@@ -1,0 +1,121 @@
+### mapping allrecipes
+GET /allrecipes
+Host: localhost:9200
+
+### delete allrecipes
+DELETE /allrecipes
+Host: localhost:9200
+
+### create allrecipes
+PUT /allrecipes
+Host: localhost:9200
+Content-Type: application/json
+
+{
+  "mappings": {
+    "properties": {
+      "description": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "directions": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "ingredients": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        },
+        "analyzer": "english"
+      }
+    }
+  },
+  "settings": {
+    "analysis": {
+      "filter": {
+        "english_stop": {
+          "type":       "stop",
+          "stopwords":  "_english_"
+        },
+        "english_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["example"]
+        },
+        "english_stemmer": {
+          "type":       "stemmer",
+          "language":   "english"
+        },
+        "english_possessive_stemmer": {
+          "type":       "stemmer",
+          "language":   "possessive_english"
+        }
+      },
+      "analyzer": {
+        "rebuilt_english": {
+          "tokenizer":  "standard",
+          "filter": [
+            "english_possessive_stemmer",
+            "lowercase",
+            "english_stop",
+            "english_keywords",
+            "english_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}
+
+### search banana
+GET /allrecipes/_search
+Host: localhost:9200
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "ingredients": "bananes"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "ingredients": {}
+    }
+  }
+}
+
+### search teaspoon salt
+GET /allrecipes/_search
+Host: localhost:9200
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "ingredients": "teaspoons salts"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "ingredients": {}
+    }
+  }
+}
+
+### termvectors fields=ingredients
+GET /allrecipes/_termvectors/1?fields=ingredients
+Host: localhost:9200
